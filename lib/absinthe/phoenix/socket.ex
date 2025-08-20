@@ -50,16 +50,17 @@ defmodule Absinthe.Phoenix.Socket do
     schema = Keyword.get(opts, :schema)
     pipeline = Keyword.get(opts, :pipeline)
     gc_interval = Keyword.get(opts, :gc_interval)
-    channel_module = Keyword.get(opts, :channel_module, Absinthe.Phoenix.Channel)
+    info_handler = Keyword.get(opts, :info_handler, Absinthe.Phoenix.Channel.InfoHandler)
 
     quote do
       channel(
         "__absinthe__:*",
-        unquote(channel_module),
+        Absinthe.Phoenix.Channel,
         assigns: %{
           __absinthe_schema__: unquote(schema),
           __absinthe_pipeline__: unquote(pipeline),
-          __absinthe_gc_interval__: unquote(gc_interval)
+          __absinthe_gc_interval__: unquote(gc_interval),
+          __absinthe_info_handler__: unquote(info_handler)
         }
       )
     end
